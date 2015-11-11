@@ -1,0 +1,124 @@
+/* Paragraph of type `box' */
+p.box {
+    border: 1;
+}
+
+/* Span of type `box' */
+span.box {
+    border: 1;
+}
+
+/* Name of department in main page title */
+.department {
+}
+
+/* <div> containing an <epigraph> */
+.epigraph {
+}
+
+/* Link to logo file */
+.framelogo {
+}
+
+/* Body of frame containing menu */
+.framemenu {
+}
+
+/* Department name in menu frame */
+.framemenudepartment {
+}
+
+/* Institutional name in menu frame */
+.framemenuinstitution {
+}
+
+/* Document title in menu frame */
+.framemenutitle {
+}
+
+/* Text in menu frame */
+.frametoc {
+}
+
+/* Table containing header */
+.header {
+}
+
+/* <div> containing header */
+.footer {
+}
+
+/* Name of institution in main page title */
+.institution {
+}
+
+/* Style of table when extra link column is used */
+.leftlinks {
+}
+
+/* Document title in main page title */
+.maintitle {
+}
+
+/* Next, Previous, and Up links */
+.navlink {
+}
+
+/* Link to a note */
+.notelink {
+}
+
+/* Link generated from TEI <ptr> */
+.ptr {
+}
+
+/* Link generated from TEI <ref> */
+.ref {
+}
+
+/* Style of table when extra link column is used */
+.rightlinks {
+}
+
+/* Class of HTML `div' for per-section table of contents */
+.subtoc {
+}
+
+/* Heading of per-section table of contents */
+.subtochead {
+}
+
+/* Wrapper around each section contents */
+.teidiv {
+}
+
+/* List and items in table of contents */
+.toc {
+}
+
+/* Link generated from TEI <xref> */
+.xref {
+}
+
+/* Link generated from TEI <xptr> */
+.xptr {
+}
+
+.foreign {
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: bold;
+}
+
+.feat {
+  font-variant: small-caps;
+}
+
+.ilform {
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+.ilgloss {
+  font-family: Courier, monospace;
+}
+
+

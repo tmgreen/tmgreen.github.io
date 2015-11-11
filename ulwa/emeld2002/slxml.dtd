@@ -1,0 +1,357 @@
+<!--
+        Document Type Definition for the SLaXicon dictionary markup
+        language.
+
+        Draft: v. 1
+
+        Author: Tom Green <tom@slaxicon.org>
+
+-->
+
+<!--================ Character mnemonic entities ==========================-->
+
+<!ENTITY zilch   "[empty]" >
+
+<!--================ User-configured parameter entities ===================-->
+
+<!-- *** List of possible language names.  This will be used as a -->
+<!-- token list in ATTLIST declarations. --> 
+
+<!ENTITY % langs  "ulw | msk | spn | eng | creo | mayng | pan | twah
+                   | tawah | nahuatl" >
+
+<!ENTITY % source.lang "ulw">
+
+<!--================ Parameter Entities ===================================-->
+
+
+<!ENTITY % source        "doc" >
+
+<!ENTITY % simple.text   "#PCDATA" >
+<!ENTITY % text          "#PCDATA" >
+
+<!ENTITY % item.list     "item, (( and | or ), item )*" >
+
+<!--================ Element/Attribute declarations =======================-->
+
+<!--================== SLaXicon content models=============================-->
+
+<!--================== Entry Structure ====================================-->
+
+<!ELEMENT slaxicon    ( syndef | entry )+ >
+
+<!ELEMENT syndef     ( lref+ ) >
+<!ATTLIST syndef
+          id ID #REQUIRED>
+
+<!ENTITY % clar.types
+        "var | varof | pref | clar | assoc | maybe" >
+
+<!ELEMENT onlyin      ( %text; )* >
+
+<!ENTITY % xref.types
+        "syn | cf | lookunder | ant | neq | eqv | eqvof" >
+
+<!ELEMENT syn         ( lref | synref )+ >
+<!ELEMENT cf          ( lref | synref )+ >
+<!ELEMENT lookunder   ( lref | synref )+ >
+<!ELEMENT ant         ( lref | synref )+ >
+<!ELEMENT neq         ( lref | synref )+ >
+<!ELEMENT eqv         ( lref | synref )+ >
+<!ELEMENT eqvof       ( lref | synref )+ >
+
+<!ELEMENT var   ( lref+ ) >
+<!ELEMENT varof   ( lref+ ) >
+<!ELEMENT pref   ( lref+ ) >
+<!ELEMENT clar   ( lref+ ) >
+<!ELEMENT assoc   ( lref+ ) >
+<!ELEMENT maybe   ( lref+ ) >
+<!ELEMENT formof   ( lref+ ) >
+
+<!ELEMENT synref   EMPTY >
+<!ATTLIST synref
+          idref IDREF #REQUIRED >
+
+<!ELEMENT lref        ( %simple.text; )* >
+<!ATTLIST lref
+          certainty ( low | high ) "high"
+          lang  ( %langs; ) #FIXED %source.lang;
+          entry IDREF #IMPLIED
+          sense CDATA #IMPLIED >
+
+<!ENTITY % exgrp  "exgrp | sent | vdef | minor" >
+<!ENTITY % txgrp  "txgrp | note" >
+
+<!ENTITY % xling          "corrgrp | loangrp" >
+
+<!-- NOTE: the following must be tightened up once hist is eliminated -->
+<!ENTITY % post.periph   "%xref.types; | ann | doc | hist" >
+
+<!ENTITY % tgg            "tg | taxgrp" >
+
+<!-- %lem.labels; are those that are associated with the form of the -->
+<!-- lemma directly, and aren't dependent on its POS -->
+<!ENTITY % lem.labels     "var | varof | maybe | pref | %xling;" >
+
+<!ENTITY % class.labels     "usg" >
+<!ENTITY % morph.forms      "mg | paradigm" >
+
+<!ENTITY % all.periph     "%lem.labels; 
+                           | %class.labels;
+                           | %morph.forms; 
+                           | clar | assoc | formof | anal | onlyin
+                           | %txgrp;
+                           | %post.periph;" >
+
+<!ENTITY % entry.meat     "%tgg; | %exgrp;" >
+
+<!-- Note: shouldn't contain sense directly, will be fixed later -->
+<!ENTITY % entry.content  "lem, (%all.periph; | pg | sense | subentry)*" >
+
+<!-- Note: shouldn't contain pg, will be fixed later -->
+<!ENTITY % sense.content  "(%all.periph; | sense | subentry | pg | %entry.meat;)*" >
+
+<!-- Eventually, this will be different from sense content, because it -->
+<!-- will no longer allow %entry.meat; directly here.  It will require -->
+<!-- an overt SENSE element even if there is only one.-->
+<!ENTITY % pg.content     "(%all.periph; | sense | subentry | %entry.meat;)*" >
+
+<!ENTITY % entry.group    "entry | pg | sense | subentry" >
+<!ENTITY % entry.group.att "id       ID       #IMPLIED
+                            hist     NMTOKENS #IMPLIED"  >
+
+<!ELEMENT entry      ( %entry.content; ) >
+<!ATTLIST entry      %entry.group.att; >
+
+<!ELEMENT subentry   ( %entry.content; ) >
+<!ATTLIST subentry   %entry.group.att; >
+
+<!ELEMENT pg         ( (feat | p)+, %pg.content; ) >
+<!ATTLIST pg         %entry.group.att; >
+
+<!ELEMENT sense      ( %sense.content; ) >
+<!ATTLIST sense      %entry.group.att; >
+
+
+<!ELEMENT lem     ( %simple.text; )* > 
+<!ATTLIST lem
+          src NMTOKENS #IMPLIED
+          lang  ( %langs; ) #FIXED %source.lang; >
+
+<!ELEMENT gramgrp   ( p | feat )+ >
+
+<!ELEMENT p         ( %simple.text; )* >
+<!ATTLIST p
+          former   CDATA #IMPLIED >
+
+<!ELEMENT feat      ( %simple.text; )* >
+<!ELEMENT noform    ( %simple.text; )* >
+
+<!ENTITY % usg.cat     "dom | time | reg | acc | who | dialect" >
+<!ENTITY % usg.cat.att "cat           NMTOKEN        #REQUIRED
+                        certainty     ( low | high ) 'high'" >
+
+<!ELEMENT usg  ( %usg.cat; )* >
+
+<!ELEMENT dom  EMPTY >
+<!ATTLIST dom  %usg.cat.att; >
+
+<!ELEMENT time  EMPTY >
+<!ATTLIST time  %usg.cat.att; >
+
+<!ELEMENT reg  EMPTY >
+<!ATTLIST reg  %usg.cat.att; >
+
+<!ELEMENT acc  EMPTY >
+<!ATTLIST acc  %usg.cat.att; >
+
+<!ELEMENT who  EMPTY >
+<!ATTLIST who  %usg.cat.att; >
+
+<!ELEMENT dialect  EMPTY >
+<!ATTLIST dialect  %usg.cat.att; >
+
+
+<!ENTITY % trans  "class | def | desc | lit
+                   | meta | qual | lcs
+                   | type" >
+
+<!ELEMENT tg  ( tr | kind | revonly | %trans; )* >
+<!ATTLIST tg
+          lang  ( %langs; ) #REQUIRED >
+
+<!ENTITY % tax.att  "certainty ( low | high ) 'high'" >
+
+<!ELEMENT taxgrp      ( tax* ) >
+
+<!ELEMENT tax         ( family | genus )* >
+<!ATTLIST tax   %tax.att; >
+
+<!ELEMENT family      ( familyname, genus* ) >
+<!ATTLIST family   %tax.att; >
+
+<!ELEMENT familyname  ( %text; )* >
+
+<!ELEMENT genus       ( genusname, species* ) >
+<!ATTLIST genus   %tax.att; >
+
+<!ELEMENT genusname   ( %text; )* >
+
+<!ELEMENT species     ( %text; )* >
+<!ATTLIST species   %tax.att; >
+
+
+<!ELEMENT exgrp ( ex+ ) >
+<!ELEMENT sent ( ex+ ) >
+<!ELEMENT vdef ( ex+ ) >
+<!ELEMENT minor ( ex+ ) >
+
+<!ELEMENT ex ( %text; | il )* >
+<!ATTLIST ex
+          certainty ( low | high ) "high"
+          lang  ( %langs; ) #REQUIRED >
+
+<!ELEMENT txgrp ( tx+ ) >
+<!ELEMENT note  ( tx+ ) >
+
+<!ELEMENT tx ( %text; )* >
+<!ATTLIST tx
+          lang  ( %langs; ) #REQUIRED >
+
+<!ELEMENT doc  EMPTY >
+<!ATTLIST doc
+          work   CDATA #REQUIRED
+          loc    CDATA #IMPLIED >
+
+<!ENTITY % tr.mod  "mod | aug" >
+
+<!ELEMENT mod  ( %text; | join )* >
+<!ATTLIST mod
+          certainty ( low | high ) "high" >
+
+<!ELEMENT aug  ( %text; | join )* >
+<!ATTLIST aug
+          certainty ( low | high ) "high" >
+
+<!ENTITY % trans.model  "( %text; | %tr.mod; )*" >
+
+<!ENTITY % trans.att    "src       NMTOKENS #IMPLIED
+                         certainty ( low | high ) 'high'" >
+
+<!ELEMENT class    %trans.model; >
+<!ATTLIST class    %trans.att; >
+
+<!ELEMENT def      %trans.model; >
+<!ATTLIST def      %trans.att; >
+
+<!ELEMENT desc     %trans.model; >
+<!ATTLIST desc     %trans.att; >
+
+<!ELEMENT lit      %trans.model; >
+<!ATTLIST lit      %trans.att; >
+
+<!ELEMENT meta     %trans.model; >
+<!ATTLIST meta     %trans.att; >
+
+<!ELEMENT qual     %trans.model; >
+<!ATTLIST qual     %trans.att; >
+
+<!ELEMENT lcs      %trans.model; >
+<!ATTLIST lcs      %trans.att; >
+
+<!ELEMENT type     %trans.model; >
+<!ATTLIST type     %trans.att; >
+ 
+<!ENTITY % trkind.model  "( #PCDATA |%tr.mod; | rev | under | asa | eq |
+                            paren | %source; | socalled |
+                            mention )*" >
+<!ENTITY % trkind.att    "src NMTOKENS #IMPLIED
+                          certainty ( low | high ) 'high'" >
+
+<!ELEMENT kind     %trkind.model; >
+<!ATTLIST kind     %trkind.att; >
+
+<!ELEMENT tr       %trkind.model; >
+<!ATTLIST tr       %trkind.att; >
+
+<!ELEMENT revonly  %trkind.model; >
+<!ATTLIST revonly  %trkind.att; >
+
+<!ELEMENT join   (%text;)* >
+
+<!ELEMENT rev   ( %text; | join | eq )* >
+<!ATTLIST rev
+          src NMTOKENS #IMPLIED
+          certainty ( low | high ) "high" >
+
+<!ELEMENT and   EMPTY >
+
+<!ELEMENT item   (%simple.text;)* >
+
+<!ELEMENT eq     ( %item.list; ) >
+
+<!-- example:
+     <tr><rev><eq><item>tamagaz</item><and/><item>tamagás</item></eq></rev></tr>
+     means that in a reverse dictionary there would be an entry
+     for 'tamagás', which would simply point to 'tamagaz'.  The
+     former form would not be mentioned in the forward dictionary
+     (unless explicitly put in a TR-type element elsewhere.  -->
+
+      
+<!ELEMENT under     ( %text; )* >
+<!ELEMENT asa       ( %text; )* >
+<!ELEMENT paren     ( %text; )* >
+
+<!-- The MG element has not been fully taken advantage of.  It -->
+<!-- should contain info that can be used in automatic inflection, etc. -->
+<!ELEMENT mg        (key | mdata | forms)+ >
+
+<!ELEMENT key       ( %simple.text; )* >
+<!ATTLIST key
+          src NMTOKENS #IMPLIED
+          certainty ( low | high ) "high"
+          lang  ( %langs; ) #FIXED %source.lang; >
+
+<!ELEMENT mdata     (stem, mclass*)* >
+<!ELEMENT stem      ( #PCDATA ) >
+<!ELEMENT mclass    ( #PCDATA ) >
+
+<!ELEMENT forms     ( infl | noform )* >
+<!ELEMENT infl      ( feat, ( form, pron? )+ ) >
+<!ELEMENT pron      ( %text; )* >
+<!ELEMENT form      ( %text; )* >
+<!ATTLIST form
+          lang  ( %langs; ) #FIXED %source.lang; >
+
+<!ELEMENT paradigm  (cspec, chead+, row+) >
+<!ELEMENT cspec     ( #PCDATA ) >
+<!ELEMENT chead     ( %text; )* >
+<!ELEMENT row       (rhead, form+) >
+<!ELEMENT rhead     ( %text; )* >
+
+<!ELEMENT hist      EMPTY >
+<!ATTLIST hist     ver NMTOKENS #REQUIRED >
+
+<!ELEMENT anal      ( %text; )* >
+<!ATTLIST anal
+          certainty ( low | high ) "high"
+          lang  ( %langs; ) #FIXED %source.lang; >
+
+<!ELEMENT loangrp      ( loanwd, ( %source; )*, (%txgrp;)*, taxgrp?) >
+<!ELEMENT corrgrp      ( corrwd, ( %source; )*, (%txgrp;)*, taxgrp?) >
+
+<!ELEMENT loanwd       ( %text; ) >
+<!ATTLIST loanwd
+          lang  ( %langs; ) #REQUIRED
+          src   NMTOKENS    #IMPLIED
+          certainty ( low | high ) "high" >
+
+<!ELEMENT corrwd       ( %text; ) >
+<!ATTLIST corrwd
+          lang  ( %langs; ) #REQUIRED
+          src   NMTOKENS    #IMPLIED
+          certainty ( low | high ) "high" >
+
+
+<!ELEMENT ann ( %text; )* >
+

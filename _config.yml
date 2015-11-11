@@ -15,11 +15,12 @@ url: "http://tmgreen.github.io" # the base hostname & protocol for your site
 twitter_username: togm
 github_username:  tmgreen
 permalink: /:year/:month/:day/:title
-
-# Build settings
-markdown: kramdown
-
+timezone: America/New_York
 exclude:
 - README.md
 - Makefile
 - GemFile
+
+# Build settings
+markdown: kramdown
+
