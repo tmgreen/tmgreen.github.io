@@ -7,7 +7,6 @@
 
 # Site settings
 title: SLaXicon.org
-email: tom@slaxicon.org
 description: > # this means to ignore newlines until "baseurl:"
   Personal website for Tom Green
 baseurl: "" # the subpath of your site, e.g. /blog
@@ -20,6 +19,7 @@ exclude:
 - README.md
 - Makefile
 - GemFile
+- GemFile.lock
 
 # Build settings
 markdown: kramdown
